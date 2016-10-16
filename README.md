@@ -1,2 +1,2 @@
 # Madagascar-in-Maps
-Madagascar in maps
+A series of notebooks to promote usage of georeferenced data from Madagascar.
