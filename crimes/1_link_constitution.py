@@ -21,6 +21,11 @@ if os.path.isfile("data/all_page.csv"):
     all_page= list(all_page.link)
 else:
     all_page=[]
+if os.path.isfile("data/base_links.csv"):
+    all_page1=pd.read_csv("data/base_links.csv",sep=",",encoding="utf-8")
+    all_page1= list(all_page1.link)
+else:
+    all_page1 = []
 #####################################################
 for i,s in enumerate(site_web):
     print i,s
@@ -45,6 +50,8 @@ for i,s in enumerate(site_web):
     link_inside = [link for link in link_inside if link not in site_web]
     #do not keep links that have been already recorded from the current loop
     link_inside = [link for link in link_inside if link not in all_page]
+    if all_page1!=[]:
+        link_inside = [link for link in link_inside if link not in all_page1]
     for k in np.unique(link_inside):
         print k
         all_page.append(k)

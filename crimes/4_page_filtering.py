@@ -13,7 +13,7 @@ import os.path
 import sys  
 reload(sys)  
 sys.setdefaultencoding('latin-1')
-### laod data (keywords also)
+### load data (keywords also)
 all_page=pd.read_csv("data/all_page.csv",sep=";",encoding="utf-8")
 all_page= list(all_page.link)
 all_page1=pd.read_csv("data/base_links.csv",sep=";",encoding="utf-8")
