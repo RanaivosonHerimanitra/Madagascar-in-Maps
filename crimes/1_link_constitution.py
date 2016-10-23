@@ -9,8 +9,8 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import numpy as np
 import os.path
-import sys  
-reload(sys)  
+import sys
+reload(sys)
 sys.setdefaultencoding('latin-1')
 #############################################################################################################
 site_web=pd.read_csv("data/site_web.csv",sep=",",encoding="utf-8")
@@ -25,7 +25,7 @@ else:
 for i,s in enumerate(site_web):
     print i,s
     try:
-        req = urllib2.Request(s.decode('utf-8'), headers={'User-Agent' : "Magic Browser"}) 
+        req = urllib2.Request(s.decode('utf-8'), headers={'User-Agent' : "Magic Browser"})
         page = urllib2.urlopen( req )
         soup = BeautifulSoup(page)
     except urllib2.HTTPError,e:
@@ -52,5 +52,5 @@ for i,s in enumerate(site_web):
 all_page=np.unique(all_page)
 len(all_page)
 df = pd.DataFrame(data=all_page, index= range(len(all_page)), columns=['link'])
-df.to_csv("all_page.csv",sep=";",encoding="utf-8")
+df.to_csv("data/all_page.csv",sep=";",encoding="utf-8")
 print df.shape
