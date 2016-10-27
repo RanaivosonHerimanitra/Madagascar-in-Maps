@@ -15,7 +15,7 @@ They should both run at the same time and  continuously read and write in a data
 
 ## TODOS:
 
-* Data Quality assessments: Duplicates, Dates of appearance, Number of (crimes) in a given page report
+* Data Quality assessments: duplicates, dates of appearance, locations knowing that same name may belongs to different locations,Number of (crimes) in a given page report
 * set up the cloud with the database
 * update all codes to deal with the database
 * set up the platform for visualizing data (current option: R/shiny)
