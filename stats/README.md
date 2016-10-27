@@ -12,3 +12,10 @@ The aims of this project is to build a real time data pipeline to monitor and vi
 `bash 2_download_links.sh "data/base_links.csv" "data/base_links.sh"`
 
 They should both run at the same time and  continuously read and write in a database (example: postgresql preferably in a cloud environment: current choice: AWS).
+
+## TODOS:
+
+* Data Quality assessments: Duplicates, Dates of appearance, Number of (crimes) in a given page report
+* set up the cloud with the database
+* update all codes to deal with the database
+* set up the platform for visualizing data (current option: R/shiny)
