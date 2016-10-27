@@ -1,6 +1,6 @@
-# Crimes mapping project:
+# Real time data monitor:
 
-The aims of this project is to build a real time data pipeline to monitor and visualize crime committed in Madagascar, demands and job offers, flood events... disaggregated by administrative area. By real time, I mean, data are  continuously scraped from links over the web.
+The aims of this project is to build a real time data pipeline to monitor and visualize crimes committed in Madagascar but also demands and job offers, flood events... disaggregated by administrative area. By real time, I mean, data are  continuously scraped from links over the web.
 
 
 * Step0 : Define a set of websites from which you are going to retrieve links : `bash 1_link_constitution.sh`
