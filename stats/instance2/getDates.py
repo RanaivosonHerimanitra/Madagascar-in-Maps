@@ -75,17 +75,27 @@ def search_date_in (form="year/month",var='link'):
         if var=='link':
             tmp=potential_pages_link
         if var=='story':
-            tmp=potential_pages_story
+            #tmp=potential_pages_story
+            tmp=[z.decode("utf8") if z is not None else [] for z in potential_pages_story ]
         i = [i for i,j in enumerate(tmp) if mymonth in j and tmp[i]!=[] ]
-        if len(i)==1:
-            print mymonth,i ,  tmp[i]
-            cursor.execute(""" UPDATE potential_pages SET dates=%s WHERE link = %s""", (mymonth,tmp[i]) )
+        if isinstance(i,int):
+            print mymonth, i ,  tmp[i]
+            cursor.execute(""" UPDATE potential_pages SET dates=%s WHERE link = %s""",
+            ( (mymonth,),(tmp[i],) ) )
             conn.commit()
-        if len(i)>1:
-            for i1 in i:
-                print mymonth, i1 ,  tmp[i1]
-                cursor.execute(""" UPDATE potential_pages SET dates=%s WHERE link = %s""", (mymonth,tmp[i1]) )
+        else:
+            if isinstance(i,list) and len(i)==1:
+                p=int(''.join( str(e) for e in i ))
+                print mymonth, p ,  tmp[p]
+                cursor.execute(""" UPDATE potential_pages SET dates=%s WHERE link = %s""",
+                ( (mymonth,),(tmp[p],) ) )
                 conn.commit()
+            if len(i)>1:
+               for i1 in i:
+                   print mymonth, i1 ,  tmp[i1]
+                   cursor.execute(""" UPDATE potential_pages SET dates=%s WHERE link = %s""",
+                   ( (mymonth,),(tmp[i1],) ) )
+                   conn.commit()
 #######################run functions#######################
 search_date_in(form="year/month",var='link')
 search_date_in(form="year-month",var='link')

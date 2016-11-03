@@ -4,7 +4,7 @@ import pandas as pd
 conn = psycopg2.connect(database='...',
                         user='...',
                         password='...',
-                        host='...',
+                        host='...', 
                         port='5432', sslmode='require')
 # get a cursor object used to execute SQL commands
 cursor = conn.cursor()

@@ -48,23 +48,34 @@ def search_location_in (invar='story',newvar='location',fromvar='FOKONTANY'):
         conn.commit()
     for x in code_ocha[fromvar]:
         #retrieve index
-        cursor.execute(""" select %s from "potential_pages" """,newvar)
+        cursor.execute(""" select %s from "potential_pages" """,(newvar,) )
         tmp=[row[0] for row in cursor]
         if newvar.endswith('story'):
             tmp0=potential_pages_story
+            tmp0=[z.decode("utf8") if z is not None else [] for z in potential_pages_story ]
         if newvar.endswith('link'):
             tmp0=potential_pages_link
+            tmp0=[z.decode("utf8") if z is not None else [] for z in potential_pages_link ]
         #
         i = [i for i,j in enumerate(tmp0) if x in j and tmp[i]!=[] ]
-        if len(i)==1:
-            print x,i ,  tmp[i]
-            cursor.execute(""" UPDATE potential_pages SET %s=%s WHERE link = %s""", (newvar,x,tmp[i]) )
+        if isinstance(i,int):
+            print x,i,tmp[i]
+            cursor.execute(""" UPDATE potential_pages SET %s=%s WHERE link = %s""",
+            ( (AsIs(newvar),),  (x,),  (tmp[i],)  ) )
             conn.commit()
         else:
-            for i1 in i:
-                print x, i1 ,  tmp[i1]
-                cursor.execute(""" UPDATE potential_pages SET %s=%s WHERE link = %s""", (newvar,x,tmp[i1]) )
+            if isinstance(i,list) and len(i)==1:
+                p=int(''.join( str(e) for e in i ))
+                print x,p,tmp[p]
+                cursor.execute(""" UPDATE potential_pages SET %s=%s WHERE link = %s""",
+                ( (AsIs(newvar),),  (x,),  (tmp[p],)  ) )
                 conn.commit()
+            if len(i)>1:
+               for i1 in i:
+                   print x,i1,tmp[i1]
+                   cursor.execute(""" UPDATE potential_pages SET %s=%s WHERE link = %s""",
+                   ( (AsIs(newvar),),  (x,),  (tmp[i1],)  ) )
+                   conn.commit()
 
 ### run functions with different combin of params:
 search_location_in(invar='story',newvar='location_fkt_story',fromvar='FOKONTANY')

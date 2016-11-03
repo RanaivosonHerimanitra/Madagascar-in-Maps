@@ -5,6 +5,7 @@ import random
 import re
 import requests
 from httplib import IncompleteRead
+from unidecode import unidecode
 import json
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -48,7 +49,7 @@ def download_data(all_page=all_page, all_page1=all_page1):
         try:
             if "https" not in s and "pdf" not in s and "jpg" not in s and "javascript" not in s:
                 req = urllib2.Request(s.decode('utf-8'), headers={'User-Agent' : "Magic Browser"})
-                page = urllib2.urlopen( req,None,4. )
+                page = urllib2.urlopen( req )
             else:
                 return
 
@@ -91,12 +92,14 @@ def download_data(all_page=all_page, all_page1=all_page1):
                 link_inside = [link for link in link_inside if link not in all_page1]
             for k in np.unique(link_inside):
                 cursor.execute(""" select * from "base_links" """)
-                print k.encode('iso-8859-1'), cursor.rowcount
-                k=k.encode('iso-8859-1')
+                #k=k.encode('iso-8859-1')
+                k=unidecode(k)
+                print k, cursor.rowcount
                 cursor.execute("INSERT INTO base_links(link) VALUES (%s)",[k] )
                 conn.commit()
 
 ### this function should run undefinitely#######################################
 while True:
+    download_data(all_page=site_web, all_page1=all_page1)
     download_data(all_page=all_page, all_page1=all_page1)
     download_data(all_page=all_page1, all_page1=all_page1)

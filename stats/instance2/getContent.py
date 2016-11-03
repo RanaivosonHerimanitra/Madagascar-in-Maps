@@ -14,32 +14,31 @@ import os.path
 import sys
 reload(sys)
 sys.setdefaultencoding('latin-1')
-#############################################################################################################
-#establish connection:
-conn = psycopg2.connect(database='...',
-                        user='...',
-                        password='...',
-                        host='...',
-                        port='5432', sslmode='require')
-# get a cursor object used to execute SQL commands
-cursor = conn.cursor()
-############################
+################################################################################
 def append_story_todf():
-    cursor.execute(""" select * from "potential_pages" """)
-    presence=[row for row in cursor ]
-    potential_pages=[row[0] for row in presence ]
-    #introduce random :
-    potential_pages=random.sample(potential_pages,len(potential_pages))
-    #####################################add story if doesnt exist yet##############
+    #establish connection:
+    conn = psycopg2.connect(database='...',
+                            user='...',
+                            password='...',
+                            host='...',
+                            port='5432', sslmode='require')
+    # get a cursor object used to execute SQL commands
+    cursor = conn.cursor()
     # what are columns in potential pages:
     cursor.execute("Select * FROM potential_pages LIMIT 0")
     colnames = [desc[0] for desc in cursor.description]
-    #
+    # add story column if It doesn't exist yet:
     if "story" not in colnames:
         query = "alter table potential_pages add column %s text"
         cols = ('story')
         cursor.execute(query, (AsIs(cols),))
         conn.commit()
+    #select column to loop:
+    cursor.execute(""" select * from "potential_pages" """)
+    presence=[row for row in cursor ]
+    potential_pages=[row[0] for row in presence ]
+    #introduce randomness to attain more pages :
+    potential_pages=random.sample(potential_pages,len(potential_pages))
     for j , url in enumerate(potential_pages):
         print j, url
         #test if url already exists and has a story in potential_pages database:
@@ -75,6 +74,7 @@ def append_story_todf():
             k=k.replace("'"," ")
             cursor.execute(""" UPDATE potential_pages SET story=%s WHERE link = %s""", (k,url) )
             conn.commit()
+    conn.close()
 #################### run the function forever#############################
 if __name__ == '__main__':
     append_story_todf()
